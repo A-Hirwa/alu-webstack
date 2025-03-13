@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#returning domain information
+
+function info(){
+    sub-domains = ("www" "lb-01" "web-01" "web-02")
+    if [-z"$2"]; then
+        for sub in "${sub-domains[@]}"; do
+            record_Type = $(dig "$sub.$1" ANY +noall +answer | awk '{print $4}')
+            destination = $(dig "$sub.$1" ANY | awk '/IN/{print $5}')
+            echo "The subdomain $sub is a $record_type record and points to $destination"
+        done
+    else
+        record_Type = $(dig "$2.$1" ANY +noall +answer | awk '{print $4}')
+        destination = $(dig "$2.$1" ANY | awk '/IN/{print $5}')
+        echo "The subdomain $2 is a $record_type record and points to $destination"
+    fi
+}
+
+info "$2.
