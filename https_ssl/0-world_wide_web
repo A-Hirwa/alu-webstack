@@ -2,8 +2,9 @@
 # Returning domain information
 
 function info() {
-    record_Type=$(dig "$2.$1" ANY +noall +answer | awk '{print $4}' | head -n1)
-    destination=$(dig "$2.$1" ANY | awk '/IN/ {print $5}' | head -n1)
+    response=$(dig +nocmd "$2.$1" ANY +noall +answer)
+    record_Type=$(echo "$response" | awk '/IN/ {print $4}' | head -n1)
+    destination=$(echo "$response" | awk '/IN/ {print $5}' | head -n1)
     echo "The subdomain $2 is a $record_Type record and points to $destination"
 }
 
